@@ -496,7 +496,7 @@ document.getElementById("clearBtn").addEventListener("click", () => {
     clearMessage();
 });
 
-// Difficulty is set from menu.html via sessionStorage
+// Difficulty is set from index.html via sessionStorage
 
 // ===== INFINITE =====
 document.getElementById("infiniteBtn").addEventListener("click", () => { init(); });

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexigo — Игра</title>
+    <title>Lexigo — Главная</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- HEADER -->
-    <header class="header">
-        <a href="menu.html" class="logo-block">
+    <header>
+        <a href="index.html" class="logo-block">
             <span class="logo-L">L</span><span class="logo-e">e</span><span>x</span><span class="logo-i">i</span><span>go</span>
         </a>
-        <div class="header-controls">
+        <div class="header-right">
             <!-- THEME -->
             <div class="btn-dropdown">
-                <button class="header-btn btn-theme-toggle">
+                <button class="hdr-btn btn-theme-toggle">
                     <span class="theme-label">☀</span> <span data-i18n="theme">Тема</span> <span class="chevron">▾</span>
                 </button>
                 <div class="theme-dropdown" id="themeDropdown">
@@ -27,7 +27,7 @@
             </div>
             <!-- LANG -->
             <div class="btn-dropdown">
-                <button class="header-btn btn-lang-toggle">
+                <button class="hdr-btn btn-lang-toggle">
                     🌐 <span class="lang-label">Русский</span> <span class="chevron">▾</span>
                 </button>
                 <div class="lang-dropdown" id="langDropdown">
@@ -35,184 +35,230 @@
                     <div class="dropdown-item" data-lang-val="ro">🇷🇴 Română <span class="di-check" id="checkRo" style="display:none">✔</span></div>
                 </div>
             </div>
-            <button class="header-btn" data-i18n="logout">Выйти</button>
         </div>
     </header>
 
-    <!-- MAIN -->
-    <main class="main-content">
-
-        <!-- GAME AREA -->
-        <section class="game-area">
-            <div class="game-topbar">
-                <a href="menu.html" class="back-btn">&#8249;</a>
-                <div class="difficulty-display">
-                    <span>🟡</span>
-                    <span>Сложность: <span class="diff-value" id="diffLabel">Средний</span></span>
-                </div>
-                <div class="topbar-right">
-                    <button class="icon-btn" id="statsBtn">&#9641;</button>
-                    <button class="icon-btn" id="helpBtn">?</button>
-                </div>
-            </div>
-
-            <div class="game-title">
-                <h2 id="gameTitle" data-i18n="gameTitle5">Угадайте слово из 5–6 букв</h2>
-                <p data-i18n="gameSubtitle">После каждой попытки цвет букв подскажет насколько<br>вы близки к разгадке.</p>
-            </div>
-
-            <div class="grid" id="grid"></div>
-
-            <div class="keyboard" id="keyboard">
-                <div class="kb-row">
-                    <div class="kb-key" data-letter="й">Й</div><div class="kb-key" data-letter="ц">Ц</div><div class="kb-key" data-letter="у">У</div><div class="kb-key" data-letter="к">К</div><div class="kb-key" data-letter="е">Е</div><div class="kb-key" data-letter="н">Н</div><div class="kb-key" data-letter="г">Г</div><div class="kb-key" data-letter="ш">Ш</div><div class="kb-key" data-letter="щ">Щ</div><div class="kb-key" data-letter="з">З</div><div class="kb-key" data-letter="х">Х</div>
-                </div>
-                <div class="kb-row">
-                    <div class="kb-key" data-letter="ф">Ф</div><div class="kb-key" data-letter="ы">Ы</div><div class="kb-key" data-letter="в">В</div><div class="kb-key" data-letter="а">А</div><div class="kb-key" data-letter="п">П</div><div class="kb-key" data-letter="р">Р</div><div class="kb-key" data-letter="о">О</div><div class="kb-key" data-letter="л">Л</div><div class="kb-key" data-letter="д">Д</div><div class="kb-key" data-letter="ж">Ж</div><div class="kb-key" data-letter="э">Э</div>
-                </div>
-                <div class="kb-row">
-                    <div class="kb-key kb-shift" data-letter="shift">⬆</div><div class="kb-key" data-letter="я">Я</div><div class="kb-key" data-letter="ч">Ч</div><div class="kb-key" data-letter="с">С</div><div class="kb-key" data-letter="м">М</div><div class="kb-key" data-letter="и">И</div><div class="kb-key" data-letter="т">Т</div><div class="kb-key" data-letter="ь">Ь</div><div class="kb-key" data-letter="б">Б</div><div class="kb-key" data-letter="ю">Ю</div><div class="kb-key kb-back" data-letter="backspace">⌫</div>
+    <!-- HERO -->
+    <div class="hero-wrap">
+        <div class="bg-blob blob-1"></div>
+        <div class="bg-blob blob-2"></div>
+        <div class="sparkle sp-1">✦</div>
+        <div class="sparkle sp-2">✦</div>
+        <section class="hero">
+            <div class="hero-left">
+                <h1 class="hero-title" data-i18n="heroTitle">Слово за<br>слово к <span class="accent">победе</span></h1>
+                <p class="hero-desc" data-i18n="heroDesc">Lexigo — это ежедневная словесная головоломка, где каждая попытка приближает вас к разгадке.</p>
+                <div class="hero-features">
+                    <div class="feature-chip"><div class="chip-icon purple">📅</div><span data-i18n="chip1">Новое слово<br>каждый день</span></div>
+                    <div class="feature-chip"><div class="chip-icon green">🏆</div><span data-i18n="chip2">Бросьте вызов<br>себе</span></div>
+                    <div class="feature-chip"><div class="chip-icon orange">📊</div><span data-i18n="chip3">Отслеживайте<br>свою статистику</span></div>
                 </div>
             </div>
-
-            <div class="game-actions">
-                <button class="action-btn how-to" id="howToBtn" data-i18n="howToBtn">ℹ Как играть</button>
-                <button class="action-btn surrender" id="surrenderBtn" data-i18n="surrenderBtn">Сдаться</button>
-                <button class="action-btn clear" id="clearBtn" data-i18n="clearBtn">↺ Очистить</button>
+            <div class="hero-right">
+                <div class="float-letter fl-1">Х</div>
+                <div class="float-letter fl-2">Л</div>
+                <div class="float-letter fl-3">G</div>
+                <div class="float-letter fl-4">O</div>
+                <div class="game-card">
+                    <div class="preview-grid">
+                        <div class="preview-row"><div class="preview-cell dark">С</div><div class="preview-cell yellow">Л</div><div class="preview-cell dark">О</div><div class="preview-cell green">В</div><div class="preview-cell dark">О</div></div>
+                        <div class="preview-row"><div class="preview-cell green">И</div><div class="preview-cell yellow">Г</div><div class="preview-cell green">Р</div><div class="preview-cell green">А</div><div class="preview-cell dark">Т</div></div>
+                        <div class="preview-row"><div class="preview-cell green">Л</div><div class="preview-cell green">Е</div><div class="preview-cell dark">К</div><div class="preview-cell dark">С</div><div class="preview-cell yellow">И</div></div>
+                        <div class="preview-row"><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div></div>
+                        <div class="preview-row"><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div><div class="preview-cell empty"></div></div>
+                    </div>
+                    <div class="card-hint"><div class="check">✔</div><span data-i18n="cardHint">Отлично! Есть буквы на своём месте.</span></div>
+                </div>
             </div>
         </section>
+    </div>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-card">
-                <h3 class="card-title">СТАТИСТИКА</h3>
-                <div class="stat-row"><span>Игр сыграно</span><span class="stat-val">12</span></div>
-                <div class="stat-row"><span>Побед</span><span class="stat-val">8</span></div>
-                <div class="stat-row"><span>Процент побед</span><span class="stat-val">67%</span></div>
-                <div class="stat-row"><span>Текущая серия</span><span class="stat-val">3 🔥</span></div>
-                <div class="stat-row"><span>Лучшая серия</span><span class="stat-val">5 🏆</span></div>
-                <a href="#" class="card-link">Подробнее →</a>
+    <!-- PLAY BUTTON -->
+    <div class="play-section">
+        <button class="big-play-btn" id="menuPlayBtn" data-i18n="playBtn">ИГРАТЬ</button>
+    </div>
+
+    <!-- INFO CARDS (2 cards: Как играть + Статистика) -->
+    <section class="info-section" style="grid-template-columns: repeat(2,1fr); max-width:860px;">
+        <div class="info-card" style="cursor:pointer" id="menuHowToCard">
+            <div class="info-card-header">
+                <div class="info-icon purple-bg">❓</div>
+                <h3 data-i18n="howToPlay">Как играть</h3>
             </div>
-            <div class="sidebar-card">
-                <h3 class="card-title">ДОСТИЖЕНИЯ</h3>
-                <div class="achievement">
-                    <div class="ach-icon fire">🔥</div>
-                    <div class="ach-info"><div class="ach-name">Новичок</div><div class="ach-desc">Сыграйте 1 игру</div></div>
-                    <div class="ach-status done">✔</div>
+            <div class="info-card-visual" style="background:#f8f5ff">
+                <div class="mini-grid">
+                    <div class="mini-cell g"></div><div class="mini-cell d"></div><div class="mini-cell y"></div><div class="mini-cell d"></div><div class="mini-cell g"></div>
+                    <div class="mini-cell d"></div><div class="mini-cell g"></div><div class="mini-cell d"></div><div class="mini-cell g"></div><div class="mini-cell y"></div>
+                    <div class="mini-cell y"></div><div class="mini-cell d"></div><div class="mini-cell g"></div><div class="mini-cell d"></div><div class="mini-cell g"></div>
                 </div>
-                <div class="achievement">
-                    <div class="ach-icon trophy">🏆</div>
-                    <div class="ach-info"><div class="ach-name">Победитель</div><div class="ach-desc">Выиграйте 10 игр</div></div>
-                    <div class="ach-status progress">8/10</div>
-                </div>
-                <div class="achievement">
-                    <div class="ach-icon sniper">🎯</div>
-                    <div class="ach-info"><div class="ach-name">Снайпер</div><div class="ach-desc">Угадайте слово с 3-й попытки</div></div>
-                    <div class="ach-status progress">2/5</div>
-                </div>
-                <a href="#" class="card-link">Все достижения →</a>
             </div>
-            <div class="sidebar-card">
-                <h3 class="card-title">ЕЖЕДНЕВНОЕ СЛОВО</h3>
-                <div class="daily-row">
-                    <div class="daily-icon">📅</div>
-                    <div>
-                        <div class="daily-label">Новое слово через:</div>
-                        <div class="daily-timer" id="dailyTimer">00:00:00</div>
-                    </div>
-                </div>
-                <p class="daily-desc">Приходите каждый день и тренируйте мозг!</p>
+            <p data-i18n="howToDesc">Угадайте скрытое слово за 6 попыток. После каждой попытки цвет букв меняется, подсказывая, насколько вы близки к разгадке.</p>
+            <a href="#" class="info-link" data-i18n="moreBtn">Подробнее →</a>
+        </div>
+        <div class="info-card" style="cursor:pointer" id="menuStatsCard">
+            <div class="info-card-header">
+                <div class="info-icon green-bg">📊</div>
+                <h3 data-i18n="statistics">Статистика</h3>
             </div>
-            <div class="sidebar-card">
-                <h3 class="card-title">БЕСКОНЕЧНЫЙ РЕЖИМ</h3>
-                <div class="infinite-row">
-                    <div class="infinite-icon">♾</div>
-                    <p>Играйте без ограничений и улучшайте статистику!</p>
+            <div class="info-card-visual" style="background:#f0faf0">
+                <div class="mini-chart">
+                    <div class="bar" style="height:30%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:40%"></div><div class="bar" style="height:80%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:90%"></div><div class="bar" style="height:70%"></div>
                 </div>
-                <button class="sidebar-play-btn" id="infiniteBtn">Играть</button>
             </div>
-        </aside>
-    </main>
+            <p data-i18n="statsDesc">Следите за своими успехами: процент побед, текущая серия и лучшая серия.</p>
+            <a href="#" class="info-link" data-i18n="moreBtn">Подробнее →</a>
+        </div>
+    </section>
 
     <!-- FOOTER -->
-    <div class="footer">
-        <div class="footer-brand">
-            <div class="footer-logo"><span class="logo-L">L</span><span class="logo-e">e</span><span>xigo</span></div>
-            <p>Ежедневная словесная игра, которая тренирует ваш мозг и расширяет словарный запас.</p>
-            <div class="footer-socials">
-                <a href="#" class="social-link">⚡</a>
-                <a href="#" class="social-link">✕</a>
-                <a href="#" class="social-link">📷</a>
-                <a href="#" class="social-link">✈</a>
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo"><span class="logo-L">L</span><span class="logo-e">e</span><span>xigo</span></div>
+                <p data-i18n="footerDesc">Ежедневная словесная игра, которая тренирует ваш мозг и расширяет словарный запас.</p>
+                <div class="socials">
+                    <a href="#" class="social-btn">⚡</a><a href="#" class="social-btn">✕</a><a href="#" class="social-btn">📷</a><a href="#" class="social-btn">✈</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4 data-i18n="footerGame">Игра</h4>
+                    <a href="#" id="footerHowTo" data-i18n="footerHowTo">Как играть</a>
+                    <a href="#" id="footerStats" data-i18n="footerStats">Статистика</a>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footerSupport">Поддержка</h4>
+                    <a href="#" data-i18n="footerFaq">Вопросы и ответы</a>
+                    <a href="#" data-i18n="footerContact">Связаться с нами</a>
+                    <a href="#" data-i18n="footerSuggest">Предложить слово</a>
+                </div>
+                <div class="footer-col">
+                    <h4 data-i18n="footerAbout">О нас</h4>
+                    <a href="#" data-i18n="footerAboutLink">О проекте</a>
+                    <a href="#" data-i18n="footerPrivacy">Конфиденциальность</a>
+                    <a href="#" data-i18n="footerTerms">Условия использования</a>
+                </div>
             </div>
         </div>
-        <div class="footer-links">
-            <div class="footer-col"><h4>Игра</h4><a href="#">Как играть</a><a href="#">Статистика</a><a href="#">Достижения</a></div>
-            <div class="footer-col"><h4>Поддержка</h4><a href="#">Вопросы и ответы</a><a href="#">Связаться с нами</a><a href="#">Предложить слово</a></div>
-            <div class="footer-col"><h4>О нас</h4><a href="#">О проекте</a><a href="#">Конфиденциальность</a><a href="#">Условия использования</a></div>
+        <div class="footer-copy" data-i18n="footerCopy">© 2024 Lexigo. Все права защищены.</div>
+    </footer>
+
+    <!-- MODAL: Difficulty -->
+    <div class="modal-overlay" id="diffModal">
+        <div class="modal diff-modal">
+            <button class="modal-close" id="closeDiffModal">✕</button>
+            <span class="diff-modal-icon">🎯</span>
+            <h2 data-i18n="diffTitle">Выберите сложность</h2>
+            <p class="sub" data-i18n="diffSub">От сложности зависит длина слова</p>
+            <div class="diff-cards">
+                <div class="diff-card" id="card-easy" onclick="selectDiff('easy')">
+                    <span class="diff-cube">🟩</span>
+                    <div class="diff-name easy" data-i18n="diffEasy">Лёгкий</div>
+                    <div class="diff-len" data-i18n="diffEasyLen">3–4 буквы</div>
+                    <div class="diff-dots"><div class="diff-dot green active"></div><div class="diff-dot green dim"></div><div class="diff-dot green dim"></div><div class="diff-dot green dim"></div></div>
+                </div>
+                <div class="diff-card selected-medium" id="card-medium" onclick="selectDiff('medium')">
+                    <div class="diff-badge" data-i18n="diffRecommend">⭐ РЕКОМЕНДУЕМ</div>
+                    <span class="diff-cube">🟨</span>
+                    <div class="diff-name medium" data-i18n="diffMedium">Средний</div>
+                    <div class="diff-len" data-i18n="diffMedLen">5–6 букв</div>
+                    <div class="diff-dots"><div class="diff-dot yellow active"></div><div class="diff-dot yellow active"></div><div class="diff-dot yellow active"></div><div class="diff-dot yellow active"></div><div class="diff-dot yellow dim"></div><div class="diff-dot yellow dim"></div><div class="diff-dot yellow dim"></div></div>
+                </div>
+                <div class="diff-card" id="card-hard" onclick="selectDiff('hard')">
+                    <span class="diff-cube">🟪</span>
+                    <div class="diff-name hard" data-i18n="diffHard">Сложный</div>
+                    <div class="diff-len" data-i18n="diffHardLen">7+ букв</div>
+                    <div class="diff-dots"><div class="diff-dot purple active"></div><div class="diff-dot purple active"></div><div class="diff-dot purple active"></div><div class="diff-dot purple active"></div><div class="diff-dot purple dim"></div><div class="diff-dot purple dim"></div><div class="diff-dot purple dim"></div><div class="diff-dot purple dim"></div></div>
+                </div>
+            </div>
+            <div class="diff-popular">
+                <span class="diff-popular-icon">🔥</span>
+                <div><strong data-i18n="diffPopularTitle">Самый популярный режим</strong><span data-i18n="diffPopularDesc">Большинство игроков выбирают Средний уровень</span></div>
+            </div>
+            <button class="diff-start-btn" id="diffStartBtn" data-i18n="diffStartBtn">Начать игру</button>
         </div>
     </div>
-    <div class="footer-copy">© 2024 Lexigo. Все права защищены.</div>
 
     <!-- MODAL: How to play -->
     <div class="modal-overlay" id="howToModal">
-        <div class="modal">
+        <div class="modal" style="max-width:420px">
             <button class="modal-close" id="closeHowTo">✕</button>
-            <h2>Как играть</h2>
-            <p>Угадайте слово за 6 попыток.</p>
+            <h2 data-i18n="howToModalTitle">Как играть</h2>
+            <p data-i18n="howToModalText">Угадайте слово за 6 попыток.</p>
             <ul>
-                <li>🟩 <b>Зелёный</b> — буква на своём месте</li>
-                <li>🟨 <b>Жёлтый</b> — буква есть, но не там</li>
-                <li>⬜ <b>Серый</b> — буквы нет в слове</li>
+                <li data-i18n="howToGreen">🟩 <b>Зелёный</b> — буква на своём месте</li>
+                <li data-i18n="howToYellow">🟨 <b>Жёлтый</b> — буква есть, но не там</li>
+                <li data-i18n="howToGray">⬜ <b>Серый</b> — буквы нет в слове</li>
             </ul>
         </div>
     </div>
 
-    <!-- MODAL: Result -->
-    <div class="modal-overlay" id="resultModal">
-        <div class="modal result-modal">
-            <button class="modal-close" id="closeResult">✕</button>
-            <canvas id="confettiCanvas"></canvas>
-            <div class="result-trophy" id="resultTrophy">🏆</div>
-            <h2 class="result-title" id="resultTitle">Отличная работа!</h2>
-            <p class="result-subtitle" id="resultSubtitle">Вы разгадали слово</p>
-            <div class="result-word" id="resultWord"></div>
-            <div class="result-stats">
-                <div class="result-stat">
-                    <div class="stat-icon purple">🕐</div>
-                    <div class="stat-body">
-                        <div class="stat-label">Время</div>
-                        <div class="stat-value" id="resultTime">00:00</div>
-                        <div class="stat-badge purple" id="timeBadge" style="display:none"></div>
-                    </div>
-                </div>
-                <div class="result-stat-divider"></div>
-                <div class="result-stat">
-                    <div class="stat-icon green">🎯</div>
-                    <div class="stat-body">
-                        <div class="stat-label">Попытки</div>
-                        <div class="stat-value" id="resultAttempts">0/6</div>
-                        <div class="stat-badge green" id="attemptsBadge" style="display:none"></div>
-                    </div>
-                </div>
+    <!-- MODAL: Statistics -->
+    <div class="modal-overlay" id="statsModal">
+        <div class="modal stats-modal">
+            <button class="modal-close" id="closeStats">✕</button>
+            <h2 data-i18n="statsModalTitle">Статистика</h2>
+            <div class="stats-grid">
+                <div class="stats-num-card"><div class="stats-num">12</div><div class="stats-num-label" data-i18n="statsPlayed">Игр сыграно</div></div>
+                <div class="stats-num-card"><div class="stats-num">8</div><div class="stats-num-label" data-i18n="statsWins">Побед</div></div>
+                <div class="stats-num-card"><div class="stats-num" style="color:var(--green)">67%</div><div class="stats-num-label" data-i18n="statsWinPct">Процент побед</div></div>
+                <div class="stats-num-card"><div class="stats-num" style="color:var(--yellow)">3🔥</div><div class="stats-num-label" data-i18n="statsStreak">Серия</div></div>
             </div>
-            <div class="result-streak" id="resultStreak">
-                <span class="streak-label">🔥 Серия побед</span>
-                <div class="streak-dots" id="streakDots"></div>
-                <span class="streak-count" id="streakCount">0</span>
-            </div>
-            <div class="result-buttons">
-                <button class="res-btn outline" id="newGameBtn">↺ Играть заново</button>
-                <button class="res-btn gradient" id="nextLevelBtn">Следующий уровень →</button>
-                <button class="res-btn plain" id="closeResultBtn">Закрыть</button>
-            </div>
-            <div class="result-tip" id="resultTip">⭐ Вы становитесь лучше с каждой игрой!</div>
+            <div class="stats-distrib-title" data-i18n="statsDistrib">Распределение попыток</div>
+            <div class="stats-bar-row"><span class="stats-bar-label">1</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:5%">0</div></div></div>
+            <div class="stats-bar-row"><span class="stats-bar-label">2</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:12%">1</div></div></div>
+            <div class="stats-bar-row"><span class="stats-bar-label">3</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:25%">2</div></div></div>
+            <div class="stats-bar-row"><span class="stats-bar-label">4</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:50%;background:var(--yellow)">4</div></div></div>
+            <div class="stats-bar-row"><span class="stats-bar-label">5</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:25%">2</div></div></div>
+            <div class="stats-bar-row"><span class="stats-bar-label">6</span><div class="stats-bar-bg"><div class="stats-bar-fill" style="width:12%">1</div></div></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
     <script src="i18n.js"></script>
     <script>
+        // ── Difficulty selection ──
+        let chosenDiff = sessionStorage.getItem('lexigo_difficulty') || 'medium';
+        selectDiff(chosenDiff);
+
+        function selectDiff(d) {
+            chosenDiff = d;
+            ['easy','medium','hard'].forEach(x => {
+                const card = document.getElementById('card-' + x);
+                card.className = 'diff-card' + (x === d ? ' selected-' + x : '');
+                if (x === 'medium' && x === d) {
+                    if (!card.querySelector('.diff-badge')) {
+                        const b = document.createElement('div');
+                        b.className = 'diff-badge';
+                        b.setAttribute('data-i18n','diffRecommend');
+                        b.textContent = TRANSLATIONS[currentLang].diffRecommend;
+                        card.prepend(b);
+                    }
+                }
+            });
+        }
+
+        document.getElementById('diffStartBtn').addEventListener('click', () => {
+            sessionStorage.setItem('lexigo_difficulty', chosenDiff);
+            window.location.href = 'play.html';
+        });
+        document.getElementById('closeDiffModal').addEventListener('click', () => document.getElementById('diffModal').classList.remove('active'));
+        document.getElementById('diffModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
+        document.getElementById('menuPlayBtn').addEventListener('click', () => document.getElementById('diffModal').classList.add('active'));
+
+        // ── How-to card & footer link ──
+        function openHowTo(e){ e.preventDefault(); document.getElementById('howToModal').classList.add('active'); }
+        document.getElementById('menuHowToCard').addEventListener('click', openHowTo);
+        document.getElementById('closeHowTo').addEventListener('click', () => document.getElementById('howToModal').classList.remove('active'));
+        document.getElementById('howToModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
+        document.getElementById('footerHowTo').addEventListener('click', openHowTo);
+
+        // ── Stats card & footer link ──
+        function openStats(e){ e.preventDefault(); document.getElementById('statsModal').classList.add('active'); }
+        document.getElementById('menuStatsCard').addEventListener('click', openStats);
+        document.getElementById('closeStats').addEventListener('click', () => document.getElementById('statsModal').classList.remove('active'));
+        document.getElementById('statsModal').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
+        document.getElementById('footerStats').addEventListener('click', openStats);
+
         // ── Theme dropdown ──
         const themeToggle = document.querySelector('.btn-theme-toggle');
         const themeDD = document.getElementById('themeDropdown');
@@ -225,6 +271,7 @@
                 document.getElementById('checkDark').style.display  = currentTheme==='dark' ?'':'none';
             });
         });
+
         // ── Lang dropdown ──
         const langToggle = document.querySelector('.btn-lang-toggle');
         const langDD = document.getElementById('langDropdown');
@@ -235,8 +282,11 @@
                 langDD.classList.remove('open');
                 document.getElementById('checkRu').style.display = currentLang==='ru'?'':'none';
                 document.getElementById('checkRo').style.display = currentLang==='ro'?'':'none';
+                // re-apply diff badge text
+                selectDiff(chosenDiff);
             });
         });
+
         document.addEventListener('click', () => { themeDD.classList.remove('open'); langDD.classList.remove('open'); });
     </script>
 </body>
