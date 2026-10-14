@@ -1,0 +1,275 @@
+// ============================================================
+//  LEXIGO — i18n + Theme
+// ============================================================
+
+const TRANSLATIONS = {
+    ru: {
+        // header
+        theme: "Тема",
+        lang: "Русский",
+        logout: "Выйти",
+        // menu hero
+        heroTitle: "Слово за<br>слово к <span class='accent'>победе</span>",
+        heroDesc: "Lexigo — это ежедневная словесная головоломка, где каждая попытка приближает вас к разгадке.",
+        chip1: "Новое слово<br>каждый день",
+        chip2: "Бросьте вызов<br>себе",
+        chip3: "Отслеживайте<br>свою статистику",
+        playBtn: "ИГРАТЬ",
+        cardHint: "Отлично! Есть буквы на своём месте.",
+        // info cards
+        howToPlay: "Как играть",
+        howToDesc: "Угадайте скрытое слово за 6 попыток. После каждой попытки цвет букв меняется, подсказывая, насколько вы близки к разгадке.",
+        moreBtn: "Подробнее →",
+        statistics: "Статистика",
+        statsDesc: "Следите за своими успехами: процент побед, текущая серия и лучшая серия.",
+        // footer
+        footerDesc: "Ежедневная словесная игра, которая тренирует ваш мозг и расширяет словарный запас.",
+        footerGame: "Игра",
+        footerSupport: "Поддержка",
+        footerAbout: "О нас",
+        footerHowTo: "Как играть",
+        footerStats: "Статистика",
+        footerFaq: "Вопросы и ответы",
+        footerContact: "Связаться с нами",
+        footerSuggest: "Предложить слово",
+        footerAboutLink: "О проекте",
+        footerPrivacy: "Конфиденциальность",
+        footerTerms: "Условия использования",
+        footerCopy: "© 2024 Lexigo. Все права защищены.",
+        // difficulty modal
+        diffTitle: "Выберите сложность",
+        diffSub: "От сложности зависит длина слова",
+        diffEasy: "Лёгкий",
+        diffMedium: "Средний",
+        diffHard: "Сложный",
+        diffEasyLen: "3–4 буквы",
+        diffMedLen: "5–6 букв",
+        diffHardLen: "7+ букв",
+        diffRecommend: "⭐ РЕКОМЕНДУЕМ",
+        diffPopularTitle: "Самый популярный режим",
+        diffPopularDesc: "Большинство игроков выбирают Средний уровень",
+        diffStartBtn: "Начать игру",
+        // how-to modal
+        howToModalTitle: "Как играть",
+        howToModalText: "Угадайте слово за 6 попыток.",
+        howToGreen: "🟩 <b>Зелёный</b> — буква на своём месте",
+        howToYellow: "🟨 <b>Жёлтый</b> — буква есть, но не там",
+        howToGray: "⬜ <b>Серый</b> — буквы нет в слове",
+        // stats modal
+        statsModalTitle: "Статистика",
+        statsPlayed: "Игр сыграно",
+        statsWins: "Побед",
+        statsWinPct: "Процент побед",
+        statsStreak: "Текущая серия",
+        statsBest: "Лучшая серия",
+        statsDistrib: "Распределение попыток",
+        // game page
+        difficulty: "Сложность",
+        gameTitle3: "Угадайте слово из 3–4 букв",
+        gameTitle5: "Угадайте слово из 5–6 букв",
+        gameTitle7: "Угадайте слово из 7+ букв",
+        gameSubtitle: "После каждой попытки цвет букв подскажет насколько вы близки к разгадке.",
+        howToBtn: "ℹ Как играть",
+        surrenderBtn: "Сдаться",
+        clearBtn: "↺ Очистить",
+        // sidebar
+        sidebarStats: "СТАТИСТИКА",
+        sidebarAch: "ДОСТИЖЕНИЯ",
+        sidebarDaily: "ЕЖЕДНЕВНОЕ СЛОВО",
+        sidebarInf: "БЕСКОНЕЧНЫЙ РЕЖИМ",
+        dailyLabel: "Новое слово через:",
+        dailyDesc: "Приходите каждый день и тренируйте мозг!",
+        infDesc: "Играйте без ограничений и улучшайте статистику!",
+        infBtn: "Играть",
+        achNovice: "Новичок", achNoviceDesc: "Сыграйте 1 игру",
+        achWinner: "Победитель", achWinnerDesc: "Выиграйте 10 игр",
+        achSniper: "Снайпер", achSniperDesc: "Угадайте слово с 3-й попытки",
+        allAch: "Все достижения →",
+        detailLink: "Подробнее →",
+        // result modal
+        resultWinTitle: "Отличная работа!",
+        resultLoseTitle: "Игра окончена",
+        resultWinSub: "Вы разгадали слово",
+        resultLoseSub: "Загаданное слово было",
+        resultTime: "Время",
+        resultAttempts: "Попытки",
+        resultRecord: "Рекорд!",
+        resultNew: "Новое достижение!",
+        resultExcellent: "Отлично!",
+        resultGood: "Хорошо!",
+        resultSniper: "Снайпер!",
+        streakLabel: "🔥 Серия побед",
+        btnReplay: "↺ Играть заново",
+        btnNextLevel: "Следующий уровень →",
+        btnClose: "Закрыть",
+        tipWin: "⭐ Вы становитесь лучше с каждой игрой!",
+        tipLose: "💪 Не сдавайтесь — попробуйте ещё раз!",
+        // game messages
+        msgFillAll: "Введите все буквы!",
+        msgNotWord: "Такого слова нет в словаре!",
+        themeLight: "Светлая",
+        themeDark: "Тёмная",
+    },
+    ro: {
+        theme: "Temă",
+        lang: "Română",
+        logout: "Ieșire",
+        heroTitle: "Cuvânt cu<br>cuvânt spre <span class='accent'>victorie</span>",
+        heroDesc: "Lexigo este un joc de cuvinte zilnic, unde fiecare încercare te aduce mai aproape de răspuns.",
+        chip1: "Cuvânt nou<br>în fiecare zi",
+        chip2: "Provoacă-te<br>pe tine însuți",
+        chip3: "Urmărește-ți<br>statisticile",
+        playBtn: "JOACĂ",
+        cardHint: "Excelent! Există litere la locul lor.",
+        howToPlay: "Cum se joacă",
+        howToDesc: "Ghicește cuvântul ascuns în 6 încercări. După fiecare încercare culoarea literelor se schimbă, indicând cât de aproape ești.",
+        moreBtn: "Mai mult →",
+        statistics: "Statistici",
+        statsDesc: "Urmărește-ți succesele: procentul de victorii, seria curentă și cea mai bună serie.",
+        footerDesc: "Un joc de cuvinte zilnic care îți antrenează mintea și îmbogățește vocabularul.",
+        footerGame: "Joc",
+        footerSupport: "Suport",
+        footerAbout: "Despre noi",
+        footerHowTo: "Cum se joacă",
+        footerStats: "Statistici",
+        footerFaq: "Întrebări frecvente",
+        footerContact: "Contactează-ne",
+        footerSuggest: "Propune un cuvânt",
+        footerAboutLink: "Despre proiect",
+        footerPrivacy: "Confidențialitate",
+        footerTerms: "Termeni de utilizare",
+        footerCopy: "© 2024 Lexigo. Toate drepturile rezervate.",
+        diffTitle: "Alege dificultatea",
+        diffSub: "Dificultatea determină lungimea cuvântului",
+        diffEasy: "Ușor",
+        diffMedium: "Mediu",
+        diffHard: "Dificil",
+        diffEasyLen: "3–4 litere",
+        diffMedLen: "5–6 litere",
+        diffHardLen: "7+ litere",
+        diffRecommend: "⭐ RECOMANDAT",
+        diffPopularTitle: "Cel mai popular mod",
+        diffPopularDesc: "Majoritatea jucătorilor aleg nivelul Mediu",
+        diffStartBtn: "Începe jocul",
+        howToModalTitle: "Cum se joacă",
+        howToModalText: "Ghicește cuvântul în 6 încercări.",
+        howToGreen: "🟩 <b>Verde</b> — litera este pe locul corect",
+        howToYellow: "🟨 <b>Galben</b> — litera există, dar în alt loc",
+        howToGray: "⬜ <b>Gri</b> — litera nu există în cuvânt",
+        statsModalTitle: "Statistici",
+        statsPlayed: "Jocuri jucate",
+        statsWins: "Victorii",
+        statsWinPct: "Procent victorii",
+        statsStreak: "Seria curentă",
+        statsBest: "Cea mai bună serie",
+        statsDistrib: "Distribuția încercărilor",
+        difficulty: "Dificultate",
+        gameTitle3: "Ghicește un cuvânt de 3–4 litere",
+        gameTitle5: "Ghicește un cuvânt de 5–6 litere",
+        gameTitle7: "Ghicește un cuvânt de 7+ litere",
+        gameSubtitle: "După fiecare încercare culoarea literelor îți va arăta cât de aproape ești.",
+        howToBtn: "ℹ Cum se joacă",
+        surrenderBtn: "Abandonează",
+        clearBtn: "↺ Șterge",
+        sidebarStats: "STATISTICI",
+        sidebarAch: "REALIZĂRI",
+        sidebarDaily: "CUVÂNTUL ZILEI",
+        sidebarInf: "MOD INFINIT",
+        dailyLabel: "Cuvânt nou peste:",
+        dailyDesc: "Vino în fiecare zi și antrenează-ți mintea!",
+        infDesc: "Joacă fără limite și îmbunătățește statisticile!",
+        infBtn: "Joacă",
+        achNovice: "Începător", achNoviceDesc: "Joacă 1 joc",
+        achWinner: "Câștigător", achWinnerDesc: "Câștigă 10 jocuri",
+        achSniper: "Lunetist", achSniperDesc: "Ghicește din a 3-a încercare",
+        allAch: "Toate realizările →",
+        detailLink: "Mai mult →",
+        resultWinTitle: "Excelent!",
+        resultLoseTitle: "Joc terminat",
+        resultWinSub: "Ai ghicit cuvântul",
+        resultLoseSub: "Cuvântul era",
+        resultTime: "Timp",
+        resultAttempts: "Încercări",
+        resultRecord: "Record!",
+        resultNew: "Realizare nouă!",
+        resultExcellent: "Excelent!",
+        resultGood: "Bine!",
+        resultSniper: "Lunetist!",
+        streakLabel: "🔥 Serie de victorii",
+        btnReplay: "↺ Joacă din nou",
+        btnNextLevel: "Nivelul următor →",
+        btnClose: "Închide",
+        tipWin: "⭐ Te îmbunătățești cu fiecare joc!",
+        tipLose: "💪 Nu renunța — mai încearcă!",
+        msgFillAll: "Completează toate literele!",
+        msgNotWord: "Acest cuvânt nu există în dicționar!",
+        themeLight: "Luminos",
+        themeDark: "Întunecat",
+    }
+};
+
+// ─── STATE ───
+let currentLang = localStorage.getItem('lexigo_lang') || 'ru';
+let currentTheme = localStorage.getItem('lexigo_theme') || 'light';
+
+// ─── APPLY THEME ───
+function applyTheme(t) {
+    currentTheme = t;
+    localStorage.setItem('lexigo_theme', t);
+    document.documentElement.setAttribute('data-theme', t);
+    // update theme button label
+    document.querySelectorAll('.theme-label').forEach(el => {
+        el.textContent = t === 'dark' ? '🌙' : '☀';
+    });
+}
+
+// ─── APPLY LANG ───
+function applyLang(l) {
+    currentLang = l;
+    localStorage.setItem('lexigo_lang', l);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const val = TRANSLATIONS[l][key];
+        if (val !== undefined) el.innerHTML = val;
+    });
+    // update lang button
+    document.querySelectorAll('.lang-label').forEach(el => {
+        el.textContent = TRANSLATIONS[l].lang;
+    });
+    // On game page: switch keyboard, word pool and restart
+    if (typeof buildKeyboard === 'function') buildKeyboard(l);
+    if (typeof switchWordPool === 'function') {
+        switchWordPool(l);
+        setTimeout(() => { if (typeof init === 'function') init(); }, 10);
+    }
+}
+
+// ─── TOGGLE THEME ───
+function toggleTheme() {
+    applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+}
+
+// ─── TOGGLE LANG ───
+function toggleLang() {
+    applyLang(currentLang === 'ru' ? 'ro' : 'ru');
+}
+
+// ─── INIT on DOM ready ───
+document.addEventListener('DOMContentLoaded', () => {
+    applyTheme(currentTheme);
+
+    // Apply translations only (no buildKeyboard/switchWordPool/init yet — script.js handles that)
+    const l = currentLang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const val = TRANSLATIONS[l][key];
+        if (val !== undefined) el.innerHTML = val;
+    });
+    document.querySelectorAll('.lang-label').forEach(el => el.textContent = TRANSLATIONS[l].lang);
+
+    // Signal script.js it can now init with correct lang
+    document.dispatchEvent(new CustomEvent('lexigo-ready'));
+
+    document.querySelectorAll('.btn-theme').forEach(b => b.addEventListener('click', toggleTheme));
+    document.querySelectorAll('.btn-lang').forEach(b => b.addEventListener('click', toggleLang));
+});
