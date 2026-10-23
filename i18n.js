@@ -72,6 +72,18 @@ const TRANSLATIONS = {
         howToBtn: "ℹ Как играть",
         surrenderBtn: "Сдаться",
         clearBtn: "↺ Очистить",
+        challengeTitle: "Вызвать друга по ссылке",
+        challengeHint: "Слово закодировано в ссылке, но не зашифровано.",
+        challengePlaceholder: "Введите слово",
+        challengeCreate: "Создать ссылку",
+        challengeCopy: "Скопировать",
+        challengeLinkLabel: "Ссылка-приглашение",
+        challengeInvalid: "Слово не найдено в словаре или ссылка повреждена.",
+        challengeCreated: "Ссылка создана. Скопируйте её и отправьте другу.",
+        challengeCopied: "Ссылка скопирована в буфер обмена!",
+        challengeCopyError: "Не удалось скопировать ссылку. Скопируйте её вручную.",
+        friendInviteTitle: "Друг бросил тебе вызов!",
+        friendInviteText: "Угадай слово, которое загадал тебе друг.",
         // sidebar
         sidebarStats: "СТАТИСТИКА",
         sidebarAch: "ДОСТИЖЕНИЯ",
@@ -171,6 +183,18 @@ const TRANSLATIONS = {
         howToBtn: "ℹ Cum se joacă",
         surrenderBtn: "Abandonează",
         clearBtn: "↺ Șterge",
+        challengeTitle: "Provoacă un prieten prin link",
+        challengeHint: "Cuvântul este codificat în link, dar nu este criptat.",
+        challengePlaceholder: "Introdu cuvântul",
+        challengeCreate: "Creează link",
+        challengeCopy: "Copiază",
+        challengeLinkLabel: "Link de invitație",
+        challengeInvalid: "Cuvântul nu există în dicționar sau linkul este deteriorat.",
+        challengeCreated: "Link creat. Copiază-l și trimite-l prietenului.",
+        challengeCopied: "Link copiat în clipboard!",
+        challengeCopyError: "Linkul nu a putut fi copiat. Copiază-l manual.",
+        friendInviteTitle: "Un prieten te-a provocat!",
+        friendInviteText: "Ghicește cuvântul ales de prietenul tău.",
         sidebarStats: "STATISTICI",
         sidebarAch: "REALIZĂRI",
         sidebarDaily: "CUVÂNTUL ZILEI",
@@ -224,13 +248,17 @@ function applyTheme(t) {
 }
 
 // ─── APPLY LANG ───
-function applyLang(l) {
+function applyLang(l, restartGame = true) {
     currentLang = l;
     localStorage.setItem('lexigo_lang', l);
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const val = TRANSLATIONS[l][key];
         if (val !== undefined) el.innerHTML = val;
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const val = TRANSLATIONS[l][el.getAttribute('data-i18n-placeholder')];
+        if (val !== undefined) el.setAttribute('placeholder', val);
     });
     // update lang button
     document.querySelectorAll('.lang-label').forEach(el => {
@@ -240,7 +268,7 @@ function applyLang(l) {
     if (typeof buildKeyboard === 'function') buildKeyboard(l);
     if (typeof switchWordPool === 'function') {
         switchWordPool(l);
-        setTimeout(() => { if (typeof init === 'function') init(); }, 10);
+        if (restartGame) setTimeout(() => { if (typeof init === 'function') init(); }, 10);
     }
 }
 
@@ -264,6 +292,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const key = el.getAttribute('data-i18n');
         const val = TRANSLATIONS[l][key];
         if (val !== undefined) el.innerHTML = val;
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const val = TRANSLATIONS[l][el.getAttribute('data-i18n-placeholder')];
+        if (val !== undefined) el.setAttribute('placeholder', val);
     });
     document.querySelectorAll('.lang-label').forEach(el => el.textContent = TRANSLATIONS[l].lang);
 
