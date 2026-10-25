@@ -133,6 +133,10 @@ function init() {
         diffLabel.style.color = "#e53935";
     }
 
+    // на клавиатуре нет «ё» — иначе слово вроде «клён» невозможно угадать
+    secret_word = secret_word.replace(/ё/g, "е");
+    wordLength = secret_word.length;
+
     maxAttempts = 6;
     currentRow = 0;
     currentCol = 0;
@@ -775,6 +779,7 @@ let activePool = { easy: WORDS_EASY, medium: WORDS_MEDIUM, hard: WORDS_HARD };
 let activeValid = VALID_WORDS;
 
 function switchWordPool(lang) {
+    loadBigDictionary(lang);
     if (lang === 'ro') {
         activePool = { easy: WORDS_RO_EASY, medium: WORDS_RO_MEDIUM, hard: WORDS_RO_HARD };
         activeValid = VALID_WORDS_RO;
@@ -787,4 +792,35 @@ function switchWordPool(lang) {
 // Override isValidWord to use activeValid
 function isValidWord(word) {
     return activeValid.has(word.toLowerCase());
+}
+
+
+// ============================================================
+//  БОЛЬШИЕ СЛОВАРИ (words/ru.json, words/ro.json)
+//  Используются ТОЛЬКО для проверки введённых слов.
+//  Загаданные слова по-прежнему берутся из списков выше.
+// ============================================================
+const _bigLoaded = {};
+
+// Подключаем words/<lang>.js как обычный <script> — так работает и с file://, и на GitHub Pages
+function loadBigDictionary(lang) {
+    if (_bigLoaded[lang]) return;
+    _bigLoaded[lang] = true;
+
+    const addWords = () => {
+        const list = (window.LEXIGO_WORDS || {})[lang];
+        if (!list) return;
+        const target = lang === 'ro' ? VALID_WORDS_RO : VALID_WORDS;
+        for (const w of list) target.add(w);
+        console.log(`Словарь ${lang}: +${list.length} слов`);
+    };
+
+    const el = document.createElement('script');
+    el.src = `words/${lang}.js`;
+    el.onload = addWords;
+    el.onerror = () => {
+        _bigLoaded[lang] = false;
+        console.warn(`Не найден words/${lang}.js`);
+    };
+    document.head.appendChild(el);
 }
