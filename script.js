@@ -98,6 +98,7 @@ let difficulty = sessionStorage.getItem("lexigo_difficulty") || "medium";
 let wordLength = 5;
 let maxAttempts = 6;
 let secret_word = "";
+let activeChallengeWord = null;
 let currentRow = 0;
 let currentCol = 0;
 let gameOver = false;
@@ -109,26 +110,36 @@ const diffLabel = document.getElementById("diffLabel");
 const gameTitle = document.getElementById("gameTitle");
 
 // ===== INIT =====
-function init() {
+function init(challengeWord = null) {
     const T = (typeof TRANSLATIONS !== "undefined" && TRANSLATIONS[currentLang]) ? TRANSLATIONS[currentLang] : TRANSLATIONS["ru"];
-    if (difficulty === "easy") {
+    const selectedChallengeWord = challengeWord || activeChallengeWord;
+    if (selectedChallengeWord) {
+        secret_word = selectedChallengeWord;
+        wordLength = selectedChallengeWord.length;
+        difficulty = wordLength <= 4 ? "easy" : wordLength <= 6 ? "medium" : "hard";
+    } else if (difficulty === "easy") {
         const len = Math.random() < 0.5 ? 3 : 4;
         const pool = (activePool || {easy: WORDS_EASY}).easy.filter(w => w.length === len);
         secret_word = pool.length ? pool[rand(pool.length)] : WORDS_EASY.filter(w=>w.length===len)[rand(WORDS_EASY.filter(w=>w.length===len).length)];
         wordLength = secret_word.length;
-        diffLabel.textContent = T.diffEasy || "Лёгкий";
-        diffLabel.style.color = "#4caf50";
     } else if (difficulty === "medium") {
         const len = Math.random() < 0.5 ? 5 : 6;
         const pool = (activePool || {medium: WORDS_MEDIUM}).medium.filter(w => w.length === len);
         secret_word = pool.length ? pool[rand(pool.length)] : WORDS_MEDIUM.filter(w=>w.length===len)[rand(WORDS_MEDIUM.filter(w=>w.length===len).length)];
         wordLength = secret_word.length;
-        diffLabel.textContent = T.diffMedium || "Средний";
-        diffLabel.style.color = "#f9a825";
     } else {
         const pool = (activePool || {hard: WORDS_HARD}).hard.filter(w => w.length >= 7);
         secret_word = pool.length ? pool[rand(pool.length)] : WORDS_HARD.filter(w=>w.length>=7)[rand(WORDS_HARD.filter(w=>w.length>=7).length)];
         wordLength = secret_word.length;
+    }
+
+    if (difficulty === "easy") {
+        diffLabel.textContent = T.diffEasy || "Лёгкий";
+        diffLabel.style.color = "#4caf50";
+    } else if (difficulty === "medium") {
+        diffLabel.textContent = T.diffMedium || "Средний";
+        diffLabel.style.color = "#f9a825";
+    } else {
         diffLabel.textContent = T.diffHard || "Сложный";
         diffLabel.style.color = "#e53935";
     }
@@ -145,7 +156,10 @@ function init() {
 
     const minLen = difficulty === "easy" ? "gameTitle3" : difficulty === "medium" ? "gameTitle5" : "gameTitle7";
     const titleEl = document.getElementById("gameTitle");
-    if (titleEl) titleEl.setAttribute('data-i18n', minLen);
+    if (titleEl) {
+        titleEl.setAttribute('data-i18n', minLen);
+        if (T[minLen]) titleEl.textContent = T[minLen];
+    }
 
     console.log("Secret:", secret_word);
     buildGrid();
@@ -505,6 +519,80 @@ document.getElementById("clearBtn").addEventListener("click", () => {
 // ===== INFINITE =====
 document.getElementById("infiniteBtn").addEventListener("click", () => { init(); });
 
+// ===== FRIEND CHALLENGE =====
+const GITHUB_PAGES_GAME_URL = "https://sava3883.github.io/Lexigo/play.html";
+
+function getChallengePageUrl() {
+    const localHosts = ["localhost", "127.0.0.1", "::1"];
+    const isLocalPreview = window.location.protocol === "file:"
+        || localHosts.includes(window.location.hostname);
+    return new URL(isLocalPreview ? GITHUB_PAGES_GAME_URL : window.location.href);
+}
+
+function readChallengeFromUrl() {
+    const params = new URLSearchParams(window.location.hash.slice(1));
+    if (!params.has("challenge")) return { present: false };
+
+    const encodedValues = params.getAll("challenge");
+    const langValues = params.getAll("lang");
+    if (encodedValues.length !== 1 || langValues.length > 1) {
+        return { present: true, invalid: true };
+    }
+
+    const lang = langValues[0] || null;
+    if (langValues.length === 1 && lang !== "ru" && lang !== "ro") {
+        return { present: true, invalid: true };
+    }
+
+    try {
+        const encoded = encodedValues[0];
+        if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(encoded)) {
+            return { present: true, invalid: true, lang };
+        }
+        const word = decodeURIComponent(atob(encoded)).trim().toLowerCase();
+        if (!word || word.length < 3) return { present: true, invalid: true, lang };
+        return { present: true, word, lang };
+    } catch {
+        return { present: true, invalid: true, lang };
+    }
+}
+
+document.getElementById("challengeForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const input = document.getElementById("challengeWord");
+    const word = input.value.trim().toLowerCase();
+    const T = TRANSLATIONS[currentLang] || TRANSLATIONS.ru;
+    const sharePanel = document.getElementById("challengeShare");
+    sharePanel.hidden = true;
+    document.getElementById("challengeLink").value = "";
+
+    if (word.length < 3 || !isValidWord(word)) {
+        showMessage(T.challengeInvalid, "warn");
+        return;
+    }
+
+    const url = getChallengePageUrl();
+    const params = new URLSearchParams();
+    params.set("challenge", btoa(encodeURIComponent(word)));
+    params.set("lang", currentLang);
+    url.hash = params.toString();
+
+    document.getElementById("challengeLink").value = url.href;
+    document.getElementById("challengeShare").hidden = false;
+    showMessage(T.challengeCreated, "success");
+});
+
+document.getElementById("copyChallengeBtn").addEventListener("click", async () => {
+    const T = TRANSLATIONS[currentLang] || TRANSLATIONS.ru;
+    const link = document.getElementById("challengeLink").value;
+    try {
+        await navigator.clipboard.writeText(link);
+        showMessage(T.challengeCopied, "success");
+    } catch {
+        showMessage(T.challengeCopyError, "warn");
+    }
+});
+
 // ===== DAILY TIMER =====
 function updateTimer() {
     const now = new Date();
@@ -525,25 +613,29 @@ updateTimer();
 // Wait for i18n.js to apply saved language/theme before first init,
 // so the correct word pool and keyboard are active from the start.
 window._lexigoReady = false;
-document.addEventListener('lexigo-ready', () => {
-    if (!window._lexigoReady) {
-        window._lexigoReady = true;
-        const lang = localStorage.getItem('lexigo_lang') || 'ru';
-        switchWordPool(lang);
-        buildKeyboard(lang);
-        init();
+function startInitialGame() {
+    if (window._lexigoReady) return;
+    window._lexigoReady = true;
+    const challenge = readChallengeFromUrl();
+    const lang = challenge.lang || localStorage.getItem('lexigo_lang') || 'ru';
+    if (challenge.lang && challenge.lang !== currentLang) applyLang(challenge.lang, false);
+    switchWordPool(lang);
+    buildKeyboard(lang);
+    const validChallenge = challenge.present && !challenge.invalid && isValidWord(challenge.word);
+    activeChallengeWord = validChallenge ? challenge.word : null;
+    init(validChallenge ? challenge.word : null);
+    if (validChallenge) {
+        document.getElementById("friendInvite").hidden = false;
+        document.body.classList.add("challenge-mode");
     }
-});
+    if (challenge.present && !validChallenge) {
+        const T = TRANSLATIONS[currentLang] || TRANSLATIONS.ru;
+        showMessage(T.challengeInvalid, "warn");
+    }
+}
+document.addEventListener('lexigo-ready', startInitialGame);
 // Fallback: if i18n.js never fires the event (e.g. not on game page), init after 100ms
-setTimeout(() => {
-    if (!window._lexigoReady) {
-        window._lexigoReady = true;
-        const lang = localStorage.getItem('lexigo_lang') || 'ru';
-        switchWordPool(lang);
-        buildKeyboard(lang);
-        init();
-    }
-}, 80);
+setTimeout(startInitialGame, 80);
 
 // ============================================================
 //  РУМЫНСКИЙ ЯЗЫК — клавиатура и словари

@@ -61,6 +61,14 @@
                 <p data-i18n="gameSubtitle">После каждой попытки цвет букв подскажет насколько<br>вы близки к разгадке.</p>
             </div>
 
+            <div class="friend-invite" id="friendInvite" hidden role="status" aria-live="polite">
+                <span class="friend-invite-icon" aria-hidden="true">🎁</span>
+                <div>
+                    <strong data-i18n="friendInviteTitle">Друг бросил тебе вызов!</strong>
+                    <p data-i18n="friendInviteText">Угадай слово, которое загадал тебе друг.</p>
+                </div>
+            </div>
+
             <div class="grid" id="grid"></div>
 
             <div class="keyboard" id="keyboard">
@@ -74,6 +82,20 @@
                     <div class="kb-key kb-shift" data-letter="shift">⬆</div><div class="kb-key" data-letter="я">Я</div><div class="kb-key" data-letter="ч">Ч</div><div class="kb-key" data-letter="с">С</div><div class="kb-key" data-letter="м">М</div><div class="kb-key" data-letter="и">И</div><div class="kb-key" data-letter="т">Т</div><div class="kb-key" data-letter="ь">Ь</div><div class="kb-key" data-letter="б">Б</div><div class="kb-key" data-letter="ю">Ю</div><div class="kb-key kb-back" data-letter="backspace">⌫</div>
                 </div>
             </div>
+
+            <form class="challenge-panel" id="challengeForm">
+                <label class="challenge-title" for="challengeWord" data-i18n="challengeTitle">Вызвать друга по ссылке</label>
+                <p class="challenge-hint" data-i18n="challengeHint">Слово будет видно другу после открытия ссылки.</p>
+                <div class="challenge-controls">
+                    <input id="challengeWord" type="text" maxlength="32" autocomplete="off" spellcheck="false" data-i18n-placeholder="challengePlaceholder" placeholder="Введите слово">
+                    <button class="action-btn challenge-create" id="createChallengeBtn" type="submit" data-i18n="challengeCreate">Создать ссылку</button>
+                </div>
+                <div class="challenge-share" id="challengeShare" hidden>
+                    <label class="visually-hidden" for="challengeLink" data-i18n="challengeLinkLabel">Ссылка-приглашение</label>
+                    <input id="challengeLink" type="url" readonly>
+                    <button class="action-btn challenge-copy" id="copyChallengeBtn" type="button" data-i18n="challengeCopy">Скопировать</button>
+                </div>
+            </form>
 
             <div class="game-actions">
                 <button class="action-btn how-to" id="howToBtn" data-i18n="howToBtn">ℹ Как играть</button>
