@@ -1,0 +1,249 @@
+// ============================================================
+//  LEXIGO — Statistics, Achievements, Daily word
+//  Хранение: localStorage (ключ lexigo_stats_v1)
+// ============================================================
+const LexigoStats = (() => {
+    const KEY = 'lexigo_stats_v1';
+    const MAX_ATTEMPTS = 6;
+
+    const defaults = () => ({
+        played: 0,
+        wins: 0,
+        streak: 0,        // текущая серия побед
+        best: 0,          // лучшая серия
+        dist: [0, 0, 0, 0, 0, 0], // победы по номеру попытки
+        sniperWins: 0,    // победы не позже 3-й попытки
+        hardWins: 0,      // победы на сложном уровне
+        dailyPlayed: 0,   // сыграно ежедневных слов
+        unlocked: {},     // id достижения -> время получения
+        daily: null       // { date, won, attempts } — результат за сегодня
+    });
+
+    // ───────── storage ─────────
+    function load() {
+        try {
+            const raw = JSON.parse(localStorage.getItem(KEY));
+            const s = Object.assign(defaults(), raw || {});
+            if (!Array.isArray(s.dist) || s.dist.length !== MAX_ATTEMPTS) s.dist = [0, 0, 0, 0, 0, 0];
+            return s;
+        } catch (e) {
+            return defaults();
+        }
+    }
+    function save(s) {
+        try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { /* storage недоступен */ }
+    }
+
+    // ───────── helpers ─────────
+    function T() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'ru';
+        return (typeof TRANSLATIONS !== 'undefined' && (TRANSLATIONS[lang] || TRANSLATIONS.ru)) || {};
+    }
+    const $ = id => document.getElementById(id);
+    const setText = (id, v) => { const el = $(id); if (el) el.textContent = v; };
+
+    function todayKey() {
+        const d = new Date();
+        const p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    }
+
+    function winPct(s) {
+        return s.played ? Math.round((s.wins / s.played) * 100) : 0;
+    }
+
+    // Результат ежедневного слова за сегодня (или null, если ещё не играли)
+    function dailyState() {
+        const s = load();
+        return (s.daily && s.daily.date === todayKey()) ? s.daily : null;
+    }
+
+    // Детерминированный индекс слова дня: одинаков для всех в течение суток
+    function dailyIndex(len, lang) {
+        const str = todayKey() + '|' + (lang || 'ru');
+        let h = 5381;
+        for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) >>> 0;
+        return len ? h % len : 0;
+    }
+
+    // ───────── achievements ─────────
+    // key / descKey — ключи в i18n.js
+    const ACHIEVEMENTS = [
+        { id: 'novice',   icon: '🔥', cls: 'fire',   key: 'achNovice',   descKey: 'achNoviceDesc',   goal: 1,  progress: s => s.played },
+        { id: 'winner',   icon: '🏆', cls: 'trophy', key: 'achWinner',   descKey: 'achWinnerDesc',   goal: 10, progress: s => s.wins },
+        { id: 'sniper',   icon: '🎯', cls: 'sniper', key: 'achSniper',   descKey: 'achSniperDesc',   goal: 5,  progress: s => s.sniperWins },
+        { id: 'marathon', icon: '🏃', cls: 'blue',   key: 'achMarathon', descKey: 'achMarathonDesc', goal: 25, progress: s => s.played },
+        { id: 'streak',   icon: '⚡', cls: 'trophy', key: 'achStreak',   descKey: 'achStreakDesc',   goal: 3,  progress: s => s.best },
+        { id: 'hard',     icon: '🧠', cls: 'pink',   key: 'achHard',     descKey: 'achHardDesc',     goal: 1,  progress: s => s.hardWins },
+        { id: 'daily',    icon: '📅', cls: 'green',  key: 'achDaily',    descKey: 'achDailyDesc',    goal: 3,  progress: s => s.dailyPlayed }
+    ];
+    const SIDEBAR_ACH = ['novice', 'winner', 'sniper']; // что показываем в сайдбаре
+
+    // ───────── record a finished game ─────────
+    // opts: { won, attempts, difficulty, daily }
+    function record(opts) {
+        const s = load();
+        s.played++;
+        if (opts.won) {
+            s.wins++;
+            s.streak++;
+            if (s.streak > s.best) s.best = s.streak;
+            const a = Math.min(Math.max(opts.attempts || MAX_ATTEMPTS, 1), MAX_ATTEMPTS);
+            s.dist[a - 1]++;
+            if (a <= 3) s.sniperWins++;
+            if (opts.difficulty === 'hard') s.hardWins++;
+        } else {
+            s.streak = 0;
+        }
+        if (opts.daily) {
+            s.dailyPlayed++;
+            s.daily = { date: todayKey(), won: !!opts.won, attempts: opts.won ? opts.attempts : null };
+        }
+
+        const unlocked = [];
+        ACHIEVEMENTS.forEach(a => {
+            if (!s.unlocked[a.id] && a.progress(s) >= a.goal) {
+                s.unlocked[a.id] = Date.now();
+                unlocked.push(a.id);
+            }
+        });
+
+        save(s);
+        renderAll();
+        return { stats: s, unlocked };
+    }
+
+    // ───────── rendering ─────────
+    function achRow(a, s) {
+        const t = T();
+        const p = a.progress(s);
+        const done = p >= a.goal;
+        const row = document.createElement('div');
+        row.className = 'achievement' + (done ? ' unlocked' : '');
+        row.innerHTML =
+            `<div class="ach-icon ${a.cls}">${a.icon}</div>` +
+            `<div class="ach-info"><div class="ach-name">${t[a.key] || a.id}</div>` +
+            `<div class="ach-desc">${t[a.descKey] || ''}</div></div>` +
+            (done ? `<div class="ach-status done">✔</div>`
+                  : `<div class="ach-status progress">${p}/${a.goal}</div>`);
+        return row;
+    }
+
+    function renderAchList(containerId, onlyIds) {
+        const box = $(containerId);
+        if (!box) return;
+        const s = load();
+        box.innerHTML = '';
+        ACHIEVEMENTS
+            .filter(a => !onlyIds || onlyIds.includes(a.id))
+            .forEach(a => box.appendChild(achRow(a, s)));
+    }
+
+    function renderSidebar() {
+        const s = load();
+        const t = T();
+        setText('sbPlayed', s.played);
+        setText('sbWins', s.wins);
+        setText('sbPct', winPct(s) + '%');
+        setText('sbStreak', s.streak + ' 🔥');
+        setText('sbBest', s.best + ' 🏆');
+        renderAchList('sbAchList', SIDEBAR_ACH);
+
+        // Ежедневное слово
+        const card = $('dailyCard');
+        const status = $('dailyStatus');
+        const d = dailyState();
+        if (card) card.classList.toggle('done', !!d);
+        if (status) {
+            status.className = 'daily-status';
+            if (!d) {
+                status.textContent = t.dailyPlay || '';
+            } else if (d.won) {
+                status.classList.add('won');
+                status.textContent = (t.dailyWon || '').replace('{n}', d.attempts);
+            } else {
+                status.classList.add('lost');
+                status.textContent = t.dailyLost || '';
+            }
+        }
+    }
+
+    function renderStatsModal() {
+        const s = load();
+        setText('smPlayed', s.played);
+        setText('smWins', s.wins);
+        setText('smPct', winPct(s) + '%');
+        setText('smStreak', s.streak + '🔥');
+        setText('smBest', s.best);
+
+        const box = $('smDist');
+        if (!box) return;
+        const max = Math.max(...s.dist, 0);
+        box.innerHTML = '';
+        s.dist.forEach((count, i) => {
+            const row = document.createElement('div');
+            row.className = 'stats-bar-row';
+            const pct = max ? Math.round((count / max) * 100) : 0;
+            const hl = max && count === max ? ';background:var(--yellow)' : '';
+            row.innerHTML =
+                `<span class="stats-bar-label">${i + 1}</span>` +
+                `<div class="stats-bar-bg"><div class="stats-bar-fill" style="width:${pct}%${hl}">${count}</div></div>`;
+            box.appendChild(row);
+        });
+    }
+
+    function renderAchModal() {
+        renderAchList('achModalList', null);
+        const s = load();
+        const got = ACHIEVEMENTS.filter(a => a.progress(s) >= a.goal).length;
+        setText('achModalCount', got + ' / ' + ACHIEVEMENTS.length);
+    }
+
+    function renderAll() {
+        renderSidebar();
+        renderStatsModal();
+        renderAchModal();
+    }
+
+    // ───────── toast ─────────
+    function toast(text) {
+        let el = $('lxToast');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'lxToast';
+            el.className = 'lx-toast';
+            document.body.appendChild(el);
+        }
+        el.textContent = text;
+        el.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    function toastUnlocked(ids) {
+        const t = T();
+        ids.forEach((id, i) => {
+            const a = ACHIEVEMENTS.find(x => x.id === id);
+            if (!a) return;
+            setTimeout(() => toast(`${a.icon} ${t.achUnlocked || ''}: ${t[a.key] || id}`), i * 3400);
+        });
+    }
+
+    // ───────── lifecycle ─────────
+    document.addEventListener('lexigo-ready', renderAll);
+    document.addEventListener('lexigo-lang-applied', renderAll);
+    document.addEventListener('DOMContentLoaded', renderAll);
+
+    // Смена суток: «Ежедневное слово» снова становится доступным
+    let lastDay = todayKey();
+    setInterval(() => {
+        const k = todayKey();
+        if (k !== lastDay) { lastDay = k; renderAll(); }
+    }, 1000);
+
+    return {
+        load, record, dailyState, dailyIndex, todayKey,
+        renderAll, renderSidebar, renderStatsModal, renderAchModal,
+        toast, toastUnlocked, ACHIEVEMENTS
+    };
+})();
