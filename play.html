@@ -49,6 +49,7 @@
                 <div class="difficulty-display">
                     <span>🟡</span>
                     <span>Сложность: <span class="diff-value" id="diffLabel">Средний</span></span>
+                    <span class="mode-badge" id="modeBadge" style="display:none"></span>
                 </div>
                 <div class="topbar-right">
                     <button class="icon-btn" id="statsBtn">&#9641;</button>
@@ -107,51 +108,38 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-card">
-                <h3 class="card-title">СТАТИСТИКА</h3>
-                <div class="stat-row"><span>Игр сыграно</span><span class="stat-val">12</span></div>
-                <div class="stat-row"><span>Побед</span><span class="stat-val">8</span></div>
-                <div class="stat-row"><span>Процент побед</span><span class="stat-val">67%</span></div>
-                <div class="stat-row"><span>Текущая серия</span><span class="stat-val">3 🔥</span></div>
-                <div class="stat-row"><span>Лучшая серия</span><span class="stat-val">5 🏆</span></div>
-                <a href="#" class="card-link">Подробнее →</a>
+                <h3 class="card-title" data-i18n="sidebarStats">СТАТИСТИКА</h3>
+                <div class="stat-row"><span data-i18n="statsPlayed">Игр сыграно</span><span class="stat-val" id="sbPlayed">0</span></div>
+                <div class="stat-row"><span data-i18n="statsWins">Побед</span><span class="stat-val" id="sbWins">0</span></div>
+                <div class="stat-row"><span data-i18n="statsWinPct">Процент побед</span><span class="stat-val" id="sbPct">0%</span></div>
+                <div class="stat-row"><span data-i18n="statsStreak">Текущая серия</span><span class="stat-val" id="sbStreak">0 🔥</span></div>
+                <div class="stat-row"><span data-i18n="statsBest">Лучшая серия</span><span class="stat-val" id="sbBest">0 🏆</span></div>
+                <a href="#" class="card-link" id="sbStatsLink" data-i18n="detailLink">Подробнее →</a>
             </div>
             <div class="sidebar-card">
-                <h3 class="card-title">ДОСТИЖЕНИЯ</h3>
-                <div class="achievement">
-                    <div class="ach-icon fire">🔥</div>
-                    <div class="ach-info"><div class="ach-name">Новичок</div><div class="ach-desc">Сыграйте 1 игру</div></div>
-                    <div class="ach-status done">✔</div>
-                </div>
-                <div class="achievement">
-                    <div class="ach-icon trophy">🏆</div>
-                    <div class="ach-info"><div class="ach-name">Победитель</div><div class="ach-desc">Выиграйте 10 игр</div></div>
-                    <div class="ach-status progress">8/10</div>
-                </div>
-                <div class="achievement">
-                    <div class="ach-icon sniper">🎯</div>
-                    <div class="ach-info"><div class="ach-name">Снайпер</div><div class="ach-desc">Угадайте слово с 3-й попытки</div></div>
-                    <div class="ach-status progress">2/5</div>
-                </div>
-                <a href="#" class="card-link">Все достижения →</a>
+                <h3 class="card-title" data-i18n="sidebarAch">ДОСТИЖЕНИЯ</h3>
+                <div id="sbAchList"></div>
+                <a href="#" class="card-link" id="sbAchLink" data-i18n="allAch">Все достижения →</a>
             </div>
-            <div class="sidebar-card">
-                <h3 class="card-title">ЕЖЕДНЕВНОЕ СЛОВО</h3>
+            <div class="sidebar-card daily-card" id="dailyCard" role="button" tabindex="0">
+                <h3 class="card-title" data-i18n="sidebarDaily">ЕЖЕДНЕВНОЕ СЛОВО</h3>
                 <div class="daily-row">
                     <div class="daily-icon">📅</div>
                     <div>
-                        <div class="daily-label">Новое слово через:</div>
+                        <div class="daily-label" data-i18n="dailyLabel">Новое слово через:</div>
                         <div class="daily-timer" id="dailyTimer">00:00:00</div>
                     </div>
                 </div>
-                <p class="daily-desc">Приходите каждый день и тренируйте мозг!</p>
+                <p class="daily-desc" data-i18n="dailyDesc">Приходите каждый день и тренируйте мозг!</p>
+                <div class="daily-status" id="dailyStatus"></div>
             </div>
-            <div class="sidebar-card">
-                <h3 class="card-title">БЕСКОНЕЧНЫЙ РЕЖИМ</h3>
+            <div class="sidebar-card" id="infiniteCard">
+                <h3 class="card-title" data-i18n="sidebarInf">БЕСКОНЕЧНЫЙ РЕЖИМ</h3>
                 <div class="infinite-row">
                     <div class="infinite-icon">♾</div>
-                    <p>Играйте без ограничений и улучшайте статистику!</p>
+                    <p data-i18n="infDesc">Играйте без ограничений и улучшайте статистику!</p>
                 </div>
-                <button class="sidebar-play-btn" id="infiniteBtn">Играть</button>
+                <button class="sidebar-play-btn" id="infiniteBtn" data-i18n="infBtn">Играть</button>
             </div>
         </aside>
     </main>
@@ -169,7 +157,7 @@
             </div>
         </div>
         <div class="footer-links">
-            <div class="footer-col"><h4>Игра</h4><a href="#">Как играть</a><a href="#">Статистика</a><a href="#">Достижения</a></div>
+            <div class="footer-col"><h4>Игра</h4><a href="#" id="footerHowTo">Как играть</a><a href="#" id="footerStats">Статистика</a><a href="#" id="footerAch">Достижения</a></div>
             <div class="footer-col"><h4>Поддержка</h4><a href="#">Вопросы и ответы</a><a href="#">Связаться с нами</a><a href="#">Предложить слово</a></div>
             <div class="footer-col"><h4>О нас</h4><a href="#">О проекте</a><a href="#">Конфиденциальность</a><a href="#">Условия использования</a></div>
         </div>
@@ -187,6 +175,32 @@
                 <li>🟨 <b>Жёлтый</b> — буква есть, но не там</li>
                 <li>⬜ <b>Серый</b> — буквы нет в слове</li>
             </ul>
+        </div>
+    </div>
+
+    <!-- MODAL: Statistics -->
+    <div class="modal-overlay" id="statsModal">
+        <div class="modal stats-modal">
+            <button class="modal-close" id="closeStats">✕</button>
+            <h2 data-i18n="statsModalTitle">Статистика</h2>
+            <div class="stats-grid">
+                <div class="stats-num-card"><div class="stats-num" id="smPlayed">0</div><div class="stats-num-label" data-i18n="statsPlayed">Игр сыграно</div></div>
+                <div class="stats-num-card"><div class="stats-num" id="smWins">0</div><div class="stats-num-label" data-i18n="statsWins">Побед</div></div>
+                <div class="stats-num-card"><div class="stats-num" id="smPct" style="color:var(--green)">0%</div><div class="stats-num-label" data-i18n="statsWinPct">Процент побед</div></div>
+                <div class="stats-num-card"><div class="stats-num" id="smStreak" style="color:var(--yellow)">0🔥</div><div class="stats-num-label" data-i18n="statsStreak">Серия</div></div>
+            </div>
+            <div class="stats-best"><span data-i18n="statsBest">Лучшая серия</span>: <b id="smBest">0</b> 🏆</div>
+            <div class="stats-distrib-title" data-i18n="statsDistrib">Распределение попыток</div>
+            <div id="smDist"></div>
+        </div>
+    </div>
+
+    <!-- MODAL: Achievements -->
+    <div class="modal-overlay" id="achModal">
+        <div class="modal ach-modal">
+            <button class="modal-close" id="closeAch">✕</button>
+            <h2><span data-i18n="achTitle">Достижения</span> <span class="ach-count" id="achModalCount">0 / 0</span></h2>
+            <div id="achModalList" class="ach-modal-list"></div>
         </div>
     </div>
 
@@ -232,6 +246,7 @@
         </div>
     </div>
 
+    <script src="stats.js"></script>
     <script src="script.js"></script>
     <script src="i18n.js"></script>
     <script>
